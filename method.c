@@ -2,6 +2,24 @@
 
 struct xy { double x; double y; };
 
+double
+df(double (*f)(double x), double x, double eps)
+{
+	return f(x+eps) - f(x-eps) / (2.0 * eps);
+}
+
+double
+dfdx(double (*f)(double x, double y), double x, double y, double eps)
+{
+	return f(x+eps,y) - f(x-eps,y) / (2.0 * eps);
+}
+
+double
+dfdy(double (*f)(double x, double y), double x, double y, double eps)
+{
+	return f(x,y+eps) - f(x,y-eps) / (2.0 * eps);
+}
+
 struct xy
 find_xy_min_cycle_descent(double (*fn)(double x, double y),
                           double x, double y, double low, double high,
@@ -120,57 +138,6 @@ find_fxy_min_y_gold(double (*fn)(double x, double y), double x,
 		}
 	}
 	return (d + c) / 2.0;
-}
-
-/* !!!does not correctly calculative */
-double
-find_fx_grad_x_linear(double (*fn)(double x),
-                      double low, double high, double eps)
-{
-	double x = low, min_x = low, df = DBL_MAX, min_df = DBL_MAX;
-
-	while((x += eps) < high) {
-		df = fabs(fn(x + eps) - fn(x));
-		if (df < min_df) {
-			min_x = x + eps / 2.0;
-			min_df = df;
-		}
-	}
-	return min_x;
-}
-
-/* !!!does not correctly calculative */
-double
-find_fxy_grad_x_linear(double (*fn)(double x, double y), double y,
-                       double low, double high, double eps)
-{
-	double x = low, min_x = low, df = DBL_MAX, min_df = DBL_MAX;
-
-	while((x += eps) < high) {
-		df = fabs(fn(x + eps, y) - fn(x, y));
-		if (df < min_df) {
-			min_x = x + eps / 2.0;
-			min_df = df;
-		}
-	}
-	return min_x;
-}
-
-/* !!!does not correctly calculative */
-double
-find_fxy_grad_y_linear(double (*fn)(double x, double y), double x,
-                       double low, double high, double eps)
-{
-	double y = low, min_y = low, df = DBL_MAX, min_df = DBL_MAX;
-
-	while((y += eps) < high) {
-		df = fabs(fn(x, y + eps) - fn(x, y));
-		if (df < min_df) {
-			min_y = y + eps / 2.0;
-			min_df = df;
-		}
-	}
-	return min_y;
 }
 
 struct xy

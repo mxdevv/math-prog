@@ -3,8 +3,8 @@
 #include <limits.h>
 #include <float.h>
 
-//#define DEBUG
-//#define EDEBUG
+#define DEBUG
+#define EDEBUG
 
 #include "method.c"
 #include "variant.c"

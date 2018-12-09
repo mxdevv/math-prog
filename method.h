@@ -10,6 +10,13 @@
 
 struct xy;
 
+double
+df(double (*f)(double x), double x, double eps);
+double
+dfdx(double (*f)(double x, double y), double x, double y, double eps);
+double
+dfdy(double (*f)(double x, double y), double x, double y, double eps);
+
 /* LW 7 */
 struct xy
 find_xy_min_cycle_descent(double (*f)(double x, double y),
@@ -30,12 +37,6 @@ find_fxy_min_y_gold(double (*f)(double x, double y), double x,
 double
 find_fxy_min_x_gold(double (*f)(double x, double y), double y,
                     double low, double high, double eps);
-double
-find_fxy_grad_x_linear(double (*f)(double x, double y), double y,
-                       double low, double high, double eps);
-double
-find_fxy_grad_y_linear(double (*f)(double x, double y), double x,
-                       double low, double high, double eps);
 struct xy
 penalty_functions_method_max(double (*f)(double x, double y),
                              double (*g1)(double x, double y),
