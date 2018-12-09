@@ -5,19 +5,19 @@ struct xy { double x; double y; };
 double
 df(double (*f)(double x), double x, double eps)
 {
-	return f(x+eps) - f(x-eps) / (2.0 * eps);
+	return (f(x+eps) - f(x-eps)) / (2.0 * eps);
 }
 
 double
 dfdx(double (*f)(double x, double y), double x, double y, double eps)
 {
-	return f(x+eps,y) - f(x-eps,y) / (2.0 * eps);
+	return (f(x+eps,y) - f(x-eps,y)) / (2.0 * eps);
 }
 
 double
 dfdy(double (*f)(double x, double y), double x, double y, double eps)
 {
-	return f(x,y+eps) - f(x,y-eps) / (2.0 * eps);
+	return (f(x,y+eps) - f(x,y-eps)) / (2.0 * eps);
 }
 
 struct xy
@@ -46,9 +46,7 @@ find_xy_min_cycle_descent(double (*fn)(double x, double y),
 }
 
 struct xy
-find_xy_min_quickest_descent(double (*fn)(double x, double y),
-                             double (*dfdx)(double x, double y),
-                             double (*dfdy)(double x, double y),
+find_xy_min_quickest_descent(double (*f)(double x, double y),
                              double x, double y, double low, double high,
                              double eps, double lambda)
 {
@@ -56,8 +54,8 @@ find_xy_min_quickest_descent(double (*fn)(double x, double y),
 	int stat = 0;
 
 	while(stat != 2) {
-		dx = dfdx(x, y);
-		dy = dfdy(x, y);
+		dx = dfdx(f, x, y, eps);
+		dy = dfdy(f, x, y, eps);
 		xp = x; yp = y;
 		x = x - lambda * dx;
 		y = y - lambda * dy;
@@ -145,12 +143,6 @@ penalty_functions_method_max(double (*f)(double x, double y),
                              double (*g1)(double x, double y),
                              double (*g2)(double x, double y),
                              double b1, double b2,
-                             double (*dfdx)(double x, double y),
-                             double (*dfdy)(double x, double y),
-                             double (*dg1dx)(double x, double y),
-                             double (*dg1dy)(double x, double y),
-                             double (*dg2dx)(double x, double y),
-                             double (*dg2dy)(double x, double y),
                              double x, double y, double eps, double lambda)
 {
 	double xn, yn, cx, cy, a;
@@ -162,8 +154,8 @@ penalty_functions_method_max(double (*f)(double x, double y),
 	xn = x; yn = y;
 	do {
 		a = eps;
-		xn = x + lambda * dfdx(x, y);
-		yn = y + lambda * dfdy(x, y);
+		xn = x + lambda * dfdx(f, x, y, eps);
+		yn = y + lambda * dfdy(f, x, y, eps);
 		if (xn < 0) xn = 0;
 		if (yn < 0) yn = 0;
 		cx = x; cy = y;
@@ -177,12 +169,12 @@ penalty_functions_method_max(double (*f)(double x, double y),
 			a = -a;
 			x = xn; y = yn;
 			if (g1(x, y) > b1) {
-				x += a * lambda * dg1dx(x, y);
-				y += a * lambda * dg1dy(x, y);
+				x += a * lambda * dfdx(g1, x, y, eps);
+				y += a * lambda * dfdy(g1, x, y, eps);
 			}
 			if (g2(x, y) > b2) {
-				x += a * lambda * dg2dx(x, y);
-				y += a * lambda * dg2dy(x, y);
+				x += a * lambda * dfdx(g2, x, y, eps);
+				y += a * lambda * dfdy(g2, x, y, eps);
 			}
 		#ifdef EDEBUG
 			printf("\e[31m::EDBG penalty_functions_method_max: a=%f\e[0m\n", a);

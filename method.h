@@ -24,8 +24,6 @@ find_xy_min_cycle_descent(double (*f)(double x, double y),
                           double eps);
 struct xy
 find_xy_min_quickest_descent(double (*f)(double x, double y),
-                             double (*dfdx)(double x, double y),
-                             double (*dfdy)(double x, double y),
                              double x, double y, double low, double high,
                              double eps, double lambda);
 double
@@ -42,10 +40,4 @@ penalty_functions_method_max(double (*f)(double x, double y),
                              double (*g1)(double x, double y),
                              double (*g2)(double x, double y),
                              double b1, double b2,
-                             double (*dfdx)(double x, double y),
-                             double (*dfdy)(double x, double y),
-                             double (*dg1dx)(double x, double y),
-                             double (*dg1dy)(double x, double y),
-                             double (*dg2dx)(double x, double y),
-                             double (*dg2dy)(double x, double y),
                              double x, double y, double eps, double lambda);
