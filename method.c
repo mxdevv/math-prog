@@ -2,6 +2,84 @@
 
 struct xy { double x; double y; };
 
+struct matrix {
+	int n, m;
+	double* data;
+};
+
+int
+cmp_double(const void* a, const void* b)
+{
+	return (*(double*)a < *(double*)b);
+}
+
+double*
+el_matr(struct matrix* matr, int n, int m)
+{
+	return &matr->data[n + m * matr->n];
+}
+
+struct matrix*
+alloc_matr(int n, int m)
+{
+	struct matrix* matr = (struct matrix*)malloc(sizeof(struct matrix));
+	matr->n = n;
+	matr->m = m;
+	matr->data = (double*)malloc(n * m * sizeof(double));
+	return matr;
+}
+
+void
+init_matr_zero(struct matrix* matr)
+{
+	for(int i = 0, j = sizeof(matr->data) / sizeof(matr->data[0]);
+			i < j; i++) {
+		matr->data[i] = 0.0;
+	}
+}
+
+void
+free_matr(struct matrix* matr)
+{
+	free(matr->data);
+	free(matr);
+}
+
+struct matrix*
+matr_copy(struct matrix* matr1)
+{
+	struct matrix* matr2 = alloc_matr(matr1->n, matr1->m);
+	for(int i = matr1->n * matr1->m; i --> 0;)
+		matr2[i] = matr1[i];
+	return matr2;
+}
+
+struct matrix*
+matr_mult(struct matrix* matr1, struct matrix* matr2)
+{
+	struct matrix* matr3 = alloc_matr(matr2->n, matr1->m);
+	init_matr_zero(matr3);
+	for(int m3i = 0; m3i < matr3->m; m3i++)
+	for(int n3i = 0; n3i < matr3->n; n3i++)
+	for(int i = 0; i < matr1->n; i++) {
+	#ifdef EDEBUG
+		printf("\e[31m::EDBG el{matr1}=%.1f, el{matr2}=%.1f, el{matr3}=%.1f\e[0m\n",
+			*el_matr(matr1, i, m3i), *el_matr(matr2, n3i, i), *el_matr(matr3, n3i, m3i));
+	#endif
+		*el_matr(matr3, n3i, m3i) += *el_matr(matr1, i, m3i) * *el_matr(matr2, n3i, i);
+	}	
+#ifdef DEBUG
+	printf("\e[32m::DBG natr_mult\n");
+	for(int mi = 0; mi < matr3->m; mi++) {
+	for(int ni = 0; ni < matr3->n; ni++) {
+			printf("%.1f ", *el_matr(matr3, ni, mi));
+		}
+		printf("\n");
+	}
+	printf("\e[0m");
+#endif
+}
+
 double
 df(double (*f)(double x), double x, double eps)
 {
@@ -194,3 +272,40 @@ penalty_functions_method_max(double (*f)(double x, double y),
 	struct xy xy1 = { x, y };
 	return xy1;
 }
+
+struct xy
+wulff_method(double (*f)(double x, double y),
+             double(*g1)(double x, double y), double(*g2)(double x, double y),
+             double b1, double b2, struct matrix* xyzw, double eps)
+{
+	double dx, dy, dz, dw, I1, I2, B1, B2, D1, D2;
+
+	double* x = el_matr(xyzw, 0, 0);
+	double* y = el_matr(xyzw, 0, 1);
+	double* z = el_matr(xyzw, 0, 2);
+	double* w = el_matr(xyzw, 0, 3);
+	
+	for(int i = 0; i < 1; i++) {
+		dx = dfdx(f, *x, *y, eps);
+		dy = dfdy(f, *x, *y, eps);
+		dz = 0.0;
+		dw = 0.0;
+		{
+			double sorted[4];
+			for(int i = 4; i --> 0;)
+				sorted[i] = *el_matr(xyzw, 0, i);
+			qsort(&sorted, 4, sizeof(double), cmp_double);
+			I1 = sorted[0];
+			I2 = sorted[1];
+		}
+
+	#ifdef DEBUG
+		printf("\e[32m::DBG "
+			"wulff_method: dx=%f, dy=%f, dz=%f, dw=%f\n",
+		                    dx,    dy,    dz,    dw);
+		printf("      I={%f,%f}\n", I1, I2); 
+		printf("\e[0m");
+	#endif
+	}
+}
+
