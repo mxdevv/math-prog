@@ -290,20 +290,42 @@ wulff_method(double (*f)(double x, double y),
 		dy = dfdy(f, *x, *y, eps);
 		dz = 0.0;
 		dw = 0.0;
+
 		{
-			double sorted[4];
+			double max = DBL_MIN;
 			for(int i = 4; i --> 0;)
-				sorted[i] = *el_matr(xyzw, 0, i);
-			qsort(&sorted, 4, sizeof(double), cmp_double);
-			I1 = sorted[0];
-			I2 = sorted[1];
+				if (*el_matr(xyzw, 0, i) > max) {
+					max = *el_matr(xyzw, 0, i);
+					I1 = i + 1;
+				}
+			max = DBL_MIN;
+			for(int i = 4; i --> 0;)
+				if (*el_matr(xyzw, 0, i) > max
+						&& i != (I1 - 1)) {
+					max = *el_matr(xyzw, 0, i);
+					I2 = i + 1;
+				}
 		}
+
+		B1 = I1;
+		B2 = I2;
+		D1 = 5 - I2;
+		D2 = 5 - I1;
+
+		struct matrix* dxyzw = alloc_matr(1, 4);
+		struct matrix* A = alloc_matr(4, 2);
+		dxyzw->data = (double[]){ dx, dy, dz, dw };
 
 	#ifdef DEBUG
 		printf("\e[32m::DBG "
 			"wulff_method: dx=%f, dy=%f, dz=%f, dw=%f\n",
 		                    dx,    dy,    dz,    dw);
+		printf("      dxyzw: {%f,%f,%f,%f}\n",
+			*el_matr(dxyzw, 0, 0), *el_matr(dxyzw, 0, 1), *el_matr(dxyzw, 0, 2),
+			*el_matr(dxyzw, 0, 3));
 		printf("      I={%f,%f}\n", I1, I2); 
+		printf("      B={%f,%f}\n", B1, B2); 
+		printf("      D={%f,%f}\n", D1, D2); 
 		printf("\e[0m");
 	#endif
 	}
