@@ -14,23 +14,23 @@
 int
 main()
 {
-	struct xy xy1;
+  struct xy xy1;
 
-	printf(
-		"------------\n"
-		"*** LW 7 ***\n"
-		"------------\n");
-	xy1 = find_xy_min_cycle_descent(f_lw7_8, -10.0, -10.0, LOW, HIGH, EPS);
-	printf("find_xy_min_cycle_descent: x = %f, y = %f\n", xy1.x, xy1.y);
-	xy1 = find_xy_min_quickest_descent(f_lw7_8,
-	                                   -10.0, -10.0, LOW, HIGH, EPS, LAMBDA);
-	printf(
-		"------------\n"
-		"*** LW 9 ***\n"
-		"------------\n");
-	printf("find_xy_min_quickest_descent: x = %f, y = %f\n", xy1.x, xy1.y);
-	xy1 = penalty_functions_method_max(f_lw9_8, g1_lw9_8, g2_lw9_8,
-	                                   b1_lw9_8, b2_lw9_8,
-	                                   1.0, 1.0, EPS, LAMBDA);
-	printf("penalty_functions_method_max: x = %f, y = %f\n", xy1.x, xy1.y);
+  printf(
+    "------------\n"
+    "*** LW 7 ***\n"
+    "------------\n");
+  xy1 = find_xy_min_cycle_descent(f_lw7_8, -10.0, -10.0, LOW, HIGH, EPS);
+  printf("find_xy_min_cycle_descent: x = %f, y = %f\n", xy1.x, xy1.y);
+  xy1 = find_xy_min_quickest_descent(f_lw7_8,
+                                     -10.0, -10.0, LOW, HIGH, EPS, LAMBDA);
+  printf(
+    "------------\n"
+    "*** LW 9 ***\n"
+    "------------\n");
+  printf("find_xy_min_quickest_descent: x = %f, y = %f\n", xy1.x, xy1.y);
+  xy1 = penalty_functions_method_max(f_lw9_8, g1_lw9_8, g2_lw9_8,
+                                     b1_lw9_8, b2_lw9_8,
+                                     1.0, 1.0, EPS, LAMBDA);
+  printf("penalty_functions_method_max: x = %f, y = %f\n", xy1.x, xy1.y);
 }

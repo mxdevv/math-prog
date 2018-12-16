@@ -54,7 +54,8 @@ matr_mult(struct matrix* matr1, struct matrix* matr2)
   for(int m3i = 0; m3i < matr3->m; m3i++)
   for(int n3i = 0; n3i < matr3->n; n3i++)
   for(int i = 0; i < matr1->n; i++) {
-    *el_matr(matr3, n3i, m3i) += *el_matr(matr1, i, m3i) * *el_matr(matr2, n3i, i);
+    *el_matr(matr3, n3i, m3i) +=
+        *el_matr(matr1, i, m3i) * *el_matr(matr2, n3i, i);
   }
 }
 
