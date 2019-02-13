@@ -8,6 +8,7 @@
 #define COUNT_LW      9
 #define COUNT_VARIANT 8
 
+char str_f_lw7_1[] = "f(x)=7*x1^2+2*x1*x2+5*x2^2+x1-10*x2";
 
 double
 f_lw7_1(double x, double y)
