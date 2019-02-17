@@ -2,7 +2,46 @@
 #define UTIL_C
 
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
+
+char*                                                                           
+itoa(int value, char* result, int base) {                                       
+  /* check that the base if valid */                                           
+  if (base < 2 || base > 36) { *result = '\0'; return result; }                 
+                                                                                
+  char* ptr = result, *ptr1 = result, tmp_char;                                 
+  int tmp_value;                                                                
+                                                                                
+  do {                                                                          
+    tmp_value = value;                                                          
+    value /= base;                                                              
+    *ptr++ = "zyxwvutsrqponmlkjihgfedcba"                                       
+             "9876543210123456789"                                              
+             "abcdefghijklmnopqrstuvwxyz"                                       
+             [35 + (tmp_value - value * base)];                                 
+  } while ( value );                                                            
+                                                                                
+  /* Apply negative sign */                    
+  if (tmp_value < 0) *ptr++ = '-';                                              
+  *ptr-- = '\0';                                                                
+  while(ptr1 < ptr) {                                                           
+    tmp_char = *ptr;                                                            
+    *ptr--= *ptr1;                                                              
+    *ptr1++ = tmp_char;                                                         
+  }                                                                             
+  return result;                                                                
+}  
+
+char*
+parse_alpha(char* str) {
+  char* end = str;
+  while(isalpha(*++end));
+  char* result = malloc(end - str + 1);
+  memcpy(result, str, end - str);
+  result[end - str] = '\0';
+  return result;
+}
 
 char*
 concat(const char *s1, const char *s2)
@@ -19,6 +58,19 @@ struct object {
   enum object_type type;
   void* data;
 };
+
+struct object*
+object_alloc() {
+  return malloc(sizeof(struct object));
+}
+
+struct object*
+object_new(enum object_type type, void* data) {
+  struct object* obj = object_alloc();
+  obj->type = type;
+  obj->data = data;
+  return obj;
+}
 
 #define STACK_INIT_SIZE 8
 
@@ -129,6 +181,13 @@ list##_new(void) {                                               \
   return lst;                                                    \
 }                                                                \
                                                                  \
+void                                                             \
+list##_free(struct list* lst) {                                  \
+  /* очищать ли память под элементы? */                          \
+  /* и что делать, если void* - указатели? */                    \
+  free(lst);                                                     \
+}                                                                \
+                                                                 \
 int                                                              \
 list##_empty(struct list* lst) {                                 \
   return lst->size == 0;                                         \
@@ -187,10 +246,10 @@ list##_pop_beg(struct list* lst) {                               \
 STACK(stackf, double)
 STACK(stackc, char)
 STACK(stacki, int)
-STACK(stacko, struct object)
+//STACK(stacko, struct object)
 
 LIST(listf, double)
 LIST(listc, char)
-LIST(listo, struct object)
+LIST(listo, struct object*)
 
 #endif
