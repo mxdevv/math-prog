@@ -10,7 +10,7 @@ itoa(int value, char* result, int base) {
   /* check that the base if valid */                                           
   if (base < 2 || base > 36) { *result = '\0'; return result; }                 
                                                                                 
-  char* ptr = result, *ptr1 = result, tmp_char;                                 
+  char* ptr = result, * ptr1 = result, tmp_char;                                 
   int tmp_value;                                                                
                                                                                 
   do {                                                                          
@@ -20,7 +20,7 @@ itoa(int value, char* result, int base) {
              "9876543210123456789"                                              
              "abcdefghijklmnopqrstuvwxyz"                                       
              [35 + (tmp_value - value * base)];                                 
-  } while ( value );                                                            
+  } while(value);                                                            
                                                                                 
   /* Apply negative sign */                    
   if (tmp_value < 0) *ptr++ = '-';                                              
@@ -34,9 +34,9 @@ itoa(int value, char* result, int base) {
 }  
 
 char*
-parse_alpha(char* str) {
+parse_var(char* str) {
   char* end = str;
-  while(isalpha(*++end));
+  while(isalpha(*++end) || isdigit(*end));
   char* result = malloc(end - str + 1);
   memcpy(result, str, end - str);
   result[end - str] = '\0';
@@ -50,26 +50,6 @@ concat(const char *s1, const char *s2)
   strcpy(result, s1);
   strcat(result, s2);
   return result;
-}
-
-enum object_type { OBJECT_DOUBLE, OBJECT_CHAR, OBJECT_STR };
-
-struct object {
-  enum object_type type;
-  void* data;
-};
-
-struct object*
-object_alloc() {
-  return malloc(sizeof(struct object));
-}
-
-struct object*
-object_new(enum object_type type, void* data) {
-  struct object* obj = object_alloc();
-  obj->type = type;
-  obj->data = data;
-  return obj;
 }
 
 #define STACK_INIT_SIZE 8
@@ -246,10 +226,11 @@ list##_pop_beg(struct list* lst) {                               \
 STACK(stackf, double)
 STACK(stackc, char)
 STACK(stacki, int)
-//STACK(stacko, struct object)
+/*STACK(stack, void*)*/
 
 LIST(listf, double)
 LIST(listc, char)
-LIST(listo, struct object*)
+LIST(listi, int)
+LIST(list, void*)
 
 #endif
