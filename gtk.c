@@ -4,9 +4,9 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include "stdlib.h"
 #include "variant.c"
 #include "util.c"
+#include "func_parser.c"
 
 GtkWidget *window;
 
@@ -42,6 +42,7 @@ GtkWidget *halign_low_high;
 GtkWidget *halign_start_x_y;
 GtkWidget *valign;
 
+double (*fn_x1x2)(double x1, double x2);
 int ind_method = -1;
 int ind_lw = -1;
 int ind_var = -1;
@@ -237,22 +238,24 @@ calc_btn_clicked(GtkWidget *widget, gpointer data)
       case 6: {
         switch(ind_method) {
           case 0: { /* метод наискорейшего спуска */
-            struct xy xy1 = find_xy_min_cycle_descent(fs_lw7[ind_var],
+            fn_x1x2 = make_func_x1x2_from_expr(strs_f_lw7[ind_var]);
+            struct xy xy1 = find_xy_min_cycle_descent(fn_x1x2,
                                                       start_x, start_y,
                                                       low, high, eps);
             char output[100];
             sprintf(output, "f(x)=%f, x1=%f, x2=%f",
-              fs_lw7[ind_var](xy1.x, xy1.y), xy1.x, xy1.y);
+              fn_x1x2(xy1.x, xy1.y), xy1.x, xy1.y);
             gtk_label_set_text(GTK_LABEL(label_result), output);
           } break;
           case 1: { /* метод циклического покоординатного спуска */
-            struct xy xy1 = find_xy_min_quickest_descent(fs_lw7[ind_var],
+            fn_x1x2 = make_func_x1x2_from_expr(strs_f_lw7[ind_var]);
+            struct xy xy1 = find_xy_min_quickest_descent(fn_x1x2,
                                                          start_x, start_y,
                                                          low, high, eps,
                                                          lambda);
             char output[100];
             sprintf(output, "f(x)=%f, x1=%f, x2=%f",
-              fs_lw7[ind_var](xy1.x, xy1.y), xy1.x, xy1.y);
+              fn_x1x2(xy1.x, xy1.y), xy1.x, xy1.y);
             gtk_label_set_text(GTK_LABEL(label_result), output);
           } break;
         }

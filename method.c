@@ -65,12 +65,12 @@ find_fx_min_x_gold(double (*fn)(double x),
     if (fn(c) < fn(d)) {
       b = d;
       d = c;
-      // a = a 
+      /* a = a */
       c = a + (b - d);
     } else {
       a = c;
       c = d;
-      // b = b
+      /* b = b */
       d = b - (c - a);
     }
   }
@@ -89,12 +89,12 @@ find_fxy_min_x_gold(double (*fn)(double x, double y), double y,
     if (fn(c, y) < fn(d, y)) {
       b = d;
       d = c;
-      // a = a
+      /* a = a */
       c = a + (b - d);
     } else {
       a = c;
       c = d;
-      // b = b
+      /* b = b */
       d = b - (c - a);
     }
   }
@@ -113,12 +113,12 @@ find_fxy_min_y_gold(double (*fn)(double x, double y), double x,
     if (fn(x, c) < fn(x, d)) {
       b = d;
       d = c;
-      // a = a
+      /* a = a */
       c = a + (b - d);
     } else {
       a = c;
       c = d;
-      // b = b
+      /* b = b */
       d = b - (c - a);
     }
   }

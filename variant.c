@@ -8,69 +8,15 @@
 #define COUNT_LW      9
 #define COUNT_VARIANT 8
 
-char str_f_lw7_1[] = "f(x)=7*x1^2+2*x1*x2+5*x2^2+x1-10*x2";
+char str_f_lw7_1[] = "7*x1^2+2*x1*x2+5*x2^2+x1-10*x2";
+char str_f_lw7_2[] = "3*x1^2-3*x1*x2+4*x2^2-2*x1+x2";
+char str_f_lw7_3[] = "x1^2+2*x2^2+e^(x1^2+x2^2)-x1-x2";
+char str_f_lw7_4[] = "sqrt(x1^2+x2^2+1)+1/2*x1-1/2*x2";
+char str_f_lw7_5[] = "x1^2+4*x1*x2+13*x1^2+5*x2";
+char str_f_lw7_6[] = "5*x1^2-4*x1*x2+5*x2^2-x1-x2";
+char str_f_lw7_7[] = "x1^4+2*x2^4+x1^2*x2^2+2*x1+x2";
+char str_f_lw7_8[] = "x1^2+3*x2^2+cos(x1+x2)";
 
-double
-f_lw7_1(double x, double y)
-{
-  return 7*POW_2(x) + 2*x*y + 5*POW_2(y) + x - 10*y;
-}
-
-char str_f_lw7_2[] = "f(x)=3*x1^2-3*x1*x2+4*x2^2-2*x1+x2";
-
-double
-f_lw7_2(double x, double y)
-{
-  return 3*POW_2(x) - 3*x*y + 4*POW_2(y) - 2*x + y;
-}
-
-char str_f_lw7_3[] = "f(x)=x1^2+2*x2^2+e^(x1^2+x2^2)-x1-x2";
-
-double
-f_lw7_3(double x, double y)
-{
-  return POW_2(x) + 2*POW_2(y) + pow(M_E, POW_2(x)+POW_2(y)) - x + y;
-}
-
-char str_f_lw7_4[] = "f(x)=√(x1^2+x2^2+1)+1/2*x1-1/2*x2";
-
-double
-f_lw7_4(double x, double y)
-{
-  sqrt(POW_2(x) + POW_2(y) + 1) + 1.0/2.0*x - 1.0/2.0*y;
-}
-
-char str_f_lw7_5[] = "f(x)=x1^2+4*x1*x2+13*x1^2+5*x2";
-
-double
-f_lw7_5(double x, double y)
-{
-  return POW_2(x) + 4*x*y + 13*POW_2(x) + 5*y;
-}
-
-char str_f_lw7_6[] = "f(x)=5*x1^2-4*x1*x2+5*x2^2-x1-x2";
-
-double
-f_lw7_6(double x, double y)
-{
-  return 5*POW_2(x) - 4*x*y + 5*POW_2(y) - x - y;
-}
-
-char str_f_lw7_7[] = "f(x)=x1^4+2*x2^4+x1^2*x2^2+2*x1+x2";
-
-double
-f_lw7_7(double x, double y)
-{
-  return POW_4(x) + 2*POW_4(y) + POW_2(x)*POW_2(y) + 2*x - y;
-}
-
-char str_f_lw7_8[] = "f(x)=x1^2+3*x2^2+cos(x1+x2)";
-
-double
-f_lw7_8(double x, double y)
-{
-  return POW_2(x) + 3*POW_2(y) + cos(x+y);
-}
 
 char str_f_lw9_1[] = "f(x)=-x1^2-x2^2\n"
                      "(x1-5)^2+(x2-5)^2 <= 8\n"
@@ -273,17 +219,6 @@ g2_lw9_8(double x, double y)
 
 const double b1_lw9_8 = 14;
 const double b2_lw9_8 = 10;
-
-double (*fs_lw7[])(double x, double y) = { f_lw7_1,
-                                           f_lw7_2,
-                                           f_lw7_3,
-                                           f_lw7_4,
-                                           f_lw7_5,
-                                           f_lw7_6,
-                                           f_lw7_7,
-                                           f_lw7_8,
-                                           NULL
-                                         };
 
 double (*fs_lw9[])(double x, double y) = { f_lw9_1,
                                            f_lw9_2,
