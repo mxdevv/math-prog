@@ -8,14 +8,14 @@
 #define COUNT_LW      9
 #define COUNT_VARIANT 8
 
-char str_f_lw7_1[] = "7*x1^2+2*x1*x2+5*x2^2+x1-10*x2";
-char str_f_lw7_2[] = "3*x1^2-3*x1*x2+4*x2^2-2*x1+x2";
-char str_f_lw7_3[] = "x1^2+2*x2^2+e^(x1^2+x2^2)-x1-x2";
-char str_f_lw7_4[] = "sqrt(x1^2+x2^2+1)+1/2*x1-1/2*x2";
-char str_f_lw7_5[] = "x1^2+4*x1*x2+13*x1^2+5*x2";
-char str_f_lw7_6[] = "5*x1^2-4*x1*x2+5*x2^2-x1-x2";
-char str_f_lw7_7[] = "x1^4+2*x2^4+x1^2*x2^2+2*x1+x2";
-char str_f_lw7_8[] = "x1^2+3*x2^2+cos(x1+x2)";
+char* strs_f_lw7[] = { "7*x1^2+2*x1*x2+5*x2^2+x1-10*x2",
+                       "3*x1^2-3*x1*x2+4*x2^2-2*x1+x2",
+                       "x1^2+2*x2^2+e^(x1^2+x2^2)-x1-x2",
+                       "sqrt(x1^2+x2^2+1)+1/2*x1-1/2*x2",
+                       "x1^2+4*x1*x2+13*x1^2+5*x2",
+                       "5*x1^2-4*x1*x2+5*x2^2-x1-x2",
+                       "x1^4+2*x2^4+x1^2*x2^2+2*x1+x2",
+                       "x1^2+3*x2^2+cos(x1+x2)" };
 
 
 char str_f_lw9_1[] = "f(x)=-x1^2-x2^2\n"
@@ -329,16 +329,6 @@ char* strs_f_lw6[] = { NULL,
                        NULL,
                        NULL,
                        NULL,
-                       NULL
-                     };
-char* strs_f_lw7[] = { str_f_lw7_1,
-                       str_f_lw7_2,
-                       str_f_lw7_3,
-                       str_f_lw7_4,
-                       str_f_lw7_5,
-                       str_f_lw7_6,
-                       str_f_lw7_7,
-                       str_f_lw7_8,
                        NULL
                      };
 char* strs_f_lw8[] = { NULL,

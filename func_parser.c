@@ -60,6 +60,8 @@ op_precedence(char ch) {
     case '/': return 8;
     case '+':
     case '-': return 6;
+    case '<':
+    case '>': return 2;
     case '(': return -1;
   }
 }
@@ -226,49 +228,34 @@ calc_rpn(struct list* rpn, struct list* prms) {
         list_add_beg(rpn, tok);
         break;
       case TOKEN_OP:
+        tok3 = list_pop_end(stck);
+        tok2 = list_pop_end(stck);
         switch(*(char*)tok->val) {
-          /* дублирование(макрос?) */
           case '^':
-            tok3 = list_pop_end(stck);
-            tok2 = list_pop_end(stck);
             resl = pow(*(double*)tok2->val, *(double*)tok3->val);
-            free(tok3);
-            memcpy(tok2->val, (void*)&resl, sizeof(double));
-            list_add_end(stck, tok2);
             break;
           case '*':
-            tok3 = list_pop_end(stck);
-            tok2 = list_pop_end(stck);
             resl = *(double*)tok2->val * *(double*)tok3->val;
-            free(tok3);
-            memcpy(tok2->val, (void*)&resl, sizeof(double));
-            list_add_end(stck, tok2);
             break;
           case '/':
-            tok3 = list_pop_end(stck);
-            tok2 = list_pop_end(stck);
             resl = *(double*)tok2->val / *(double*)tok3->val;
-            free(tok3);
-            memcpy(tok2->val, (void*)&resl, sizeof(double));
-            list_add_end(stck, tok2);
             break;
           case '+':
-            tok3 = list_pop_end(stck);
-            tok2 = list_pop_end(stck);
             resl = *(double*)tok2->val + *(double*)tok3->val;
-            free(tok3);
-            memcpy(tok2->val, (void*)&resl, sizeof(double));
-            list_add_end(stck, tok2);
             break;
           case '-':
-            tok3 = list_pop_end(stck);
-            tok2 = list_pop_end(stck);
             resl = *(double*)tok2->val - *(double*)tok3->val;
-            free(tok3);
-            memcpy(tok2->val, (void*)&resl, sizeof(double));
-            list_add_end(stck, tok2);
+            break;
+          case '<':
+            resl = (*(double*)tok2->val < *(double*)tok3->val) ? 1.0 : 0.0;
+            break;
+          case '>':
+            resl = (*(double*)tok2->val > *(double*)tok3->val) ? 1.0 : 0.0;
             break;
         }
+        free(tok3);
+        memcpy(tok2->val, (void*)&resl, sizeof(double));
+        list_add_end(stck, tok2);
         break;
       case TOKEN_OP_BRACKET:
         break;
